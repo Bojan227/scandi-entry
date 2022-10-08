@@ -2,6 +2,7 @@ import React from 'react';
 import logo from '../images/logo.png';
 import cart from '../images/empty_cart.png';
 import caret from '../images/vector.png';
+import { CartOverlay } from './CartOverlay';
 import { Query } from '@apollo/client/react/components/Query';
 import { gql } from '@apollo/client';
 
@@ -19,6 +20,7 @@ const categoriesData = ['CLOTHES', 'TECH'];
 export class Nav extends React.Component {
   state = {
     toggleCurrency: false,
+    toggleCart: false,
   };
 
   render() {
@@ -59,6 +61,7 @@ export class Nav extends React.Component {
                         this.setState(state => ({
                           ...state,
                           toggleCurrency: !state.toggleCurrency,
+                          toggleCart: false,
                         }))
                       }
                     >
@@ -90,12 +93,33 @@ export class Nav extends React.Component {
                         );
                       })}
                     </ul>
+                    <div
+                      className="cart-overlay-dropdown"
+                      style={{
+                        display: `${this.state.toggleCart ? 'block' : 'none'}`,
+                      }}
+                    >
+                      <CartOverlay
+                        cartItems={this.props.cartItems}
+                        currentCurrency={this.props.currentCurrency}
+                      />
+                    </div>
                   </div>
                 );
               }}
             </Query>
           </div>
-          <img src={cart} alt="empty_cart" />
+          <section
+            onClick={() =>
+              this.setState(state => ({
+                ...state,
+                toggleCart: !state.toggleCart,
+                toggleCurrency: false,
+              }))
+            }
+          >
+            <img src={cart} alt="empty_cart" />
+          </section>
         </section>
       </nav>
     );

@@ -46,6 +46,7 @@ export class CategoriesContainer extends React.Component {
             if (loading) return 'Loading....';
             const { name, products } =
               data.categories[this.props.currentCategory + 1];
+
             return (
               <div className="category-container">
                 <h1>{name.charAt(0).toUpperCase() + name.slice(1)}</h1>
@@ -56,6 +57,7 @@ export class CategoriesContainer extends React.Component {
                         key={i}
                         currentCurrency={this.props.currentCurrency}
                         {...product}
+                        onClick={() => this.props.addCartItems(product)}
                       />
                     );
                   })}

@@ -8,6 +8,7 @@ class App extends React.Component {
   state = {
     currentCategory: 0,
     currentCurrency: 0,
+    cartItems: [],
   };
 
   changeCategory = index => {
@@ -24,6 +25,16 @@ class App extends React.Component {
     }));
   };
 
+  addCartItems = product => {
+    this.setState(state => ({
+      ...state,
+      cartItems: state.cartItems.some(item => item.id === product.id)
+        ? [...state.cartItems]
+        : [...state.cartItems, { ...product, quantity: 1 }],
+    }));
+    console.log(this.state.cartItems);
+  };
+
   render() {
     return (
       <div className="App">
@@ -32,10 +43,12 @@ class App extends React.Component {
           currentCurrency={this.state.currentCurrency}
           changeCategory={this.changeCategory}
           changeCurrency={this.changeCurrency}
+          cartItems={this.state.cartItems}
         />
         <CategoriesContainer
           currentCategory={this.state.currentCategory}
           currentCurrency={this.state.currentCurrency}
+          addCartItems={this.addCartItems}
         />
       </div>
     );
