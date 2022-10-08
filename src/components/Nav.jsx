@@ -14,10 +14,10 @@ const CURRENCIES_QUERY = gql`
   }
 `;
 
+const categoriesData = ['CLOTHES', 'TECH'];
+
 export class Nav extends React.Component {
   state = {
-    currentCurrency: 0,
-    currentCategory: 0,
     toggleCurrency: false,
   };
 
@@ -25,33 +25,21 @@ export class Nav extends React.Component {
     return (
       <nav className="main-navigation">
         <ul className="categories">
-          <li
-            style={{
-              borderBottom: `${
-                this.state.currentCategory === 0 ? '1px solid #5ECE7B' : ''
-              }`,
-            }}
-          >
-            WOMEN
-          </li>
-          <li
-            style={{
-              borderBottom: `${
-                this.state.currentCategory === 1 ? '1px solid #5ECE7B' : ''
-              }`,
-            }}
-          >
-            MEN
-          </li>
-          <li
-            style={{
-              borderBottom: `${
-                this.state.currentCategory === 2 ? '1px solid #5ECE7B' : ''
-              }`,
-            }}
-          >
-            KIDS
-          </li>
+          {categoriesData.map((category, i) => {
+            return (
+              <li
+                key={i}
+                style={{
+                  borderBottom: `${
+                    this.props.currentCategory === i ? '1px solid #5ECE7B' : ''
+                  }`,
+                }}
+                onClick={() => this.props.changeCategory(i)}
+              >
+                {category}
+              </li>
+            );
+          })}
         </ul>
         <section>
           <img src={logo} alt="" />
@@ -60,7 +48,6 @@ export class Nav extends React.Component {
           <div className="currencies">
             <Query query={CURRENCIES_QUERY}>
               {({ loading, error, data }) => {
-                console.log(data);
                 if (loading) return 'Loading....';
                 const { currencies } = data;
 
@@ -75,7 +62,7 @@ export class Nav extends React.Component {
                         }))
                       }
                     >
-                      <h1>{currencies[this.state.currentCurrency].symbol}</h1>
+                      <h1>{currencies[this.props.currentCurrency].symbol}</h1>
                       <img src={caret} alt="caret" />
                     </div>
                     <ul
@@ -89,9 +76,9 @@ export class Nav extends React.Component {
                           <div
                             key={i}
                             onClick={() => {
+                              this.props.changeCurrency(i);
                               this.setState(state => ({
                                 ...state,
-                                currentCurrency: i,
                                 toggleCurrency: !state.toggleCurrency,
                               }));
                             }}
