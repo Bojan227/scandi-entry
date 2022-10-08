@@ -18,8 +18,8 @@ export class CartProductCard extends React.Component {
           <div className="attributes">
             {console.log(this.props.item)}
             <h2>{this.props.item.attributes[0].name}</h2>
-            {this.props.item.attributes[0].items.map(item => {
-              return <button>{item.displayValue}</button>;
+            {this.props.item.attributes[0].items.map((item, i) => {
+              return <button key={i}>{item.displayValue}</button>;
             })}
           </div>
         </section>

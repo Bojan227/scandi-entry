@@ -11,6 +11,7 @@ export class CartOverlay extends React.Component {
         ) : (
           this.props.cartItems.map(item => (
             <CartProductCard
+              key={item.id}
               item={item}
               currentCurrency={this.props.currentCurrency}
             />
