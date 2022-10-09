@@ -23,6 +23,13 @@ export class Nav extends React.Component {
     toggleCart: false,
   };
 
+  closeMiniCart = () => {
+    this.setState(state => ({
+      ...state,
+      toggleCart: false,
+    }));
+  };
+
   render() {
     return (
       <nav className="main-navigation">
@@ -36,14 +43,17 @@ export class Nav extends React.Component {
                     this.props.currentCategory === i ? '1px solid #5ECE7B' : ''
                   }`,
                 }}
-                onClick={() => this.props.changeCategory(i)}
+                onClick={() => {
+                  this.props.changeCategory(i);
+                  this.props.closeCartPage();
+                }}
               >
                 {category}
               </li>
             );
           })}
         </ul>
-        <section>
+        <section onClick={() => this.props.closeCartPage()}>
           <img src={logo} alt="" />
         </section>
         <section className="cart-currency">
@@ -102,6 +112,12 @@ export class Nav extends React.Component {
                       <CartOverlay
                         cartItems={this.props.cartItems}
                         currentCurrency={this.props.currentCurrency}
+                        incrementQuantity={this.props.incrementQuantity}
+                        decrementQuantity={this.props.decrementQuantity}
+                        selectedAttributes={this.props.selectedAttributes}
+                        addAttribute={this.props.addAttribute}
+                        openCartPage={this.props.openCartPage}
+                        closeMiniCart={this.closeMiniCart}
                       />
                     </div>
                   </div>
@@ -117,8 +133,14 @@ export class Nav extends React.Component {
                 toggleCurrency: false,
               }))
             }
+            className="empty_cart"
           >
             <img src={cart} alt="empty_cart" />
+            {this.props.cartItems.length ? (
+              <div className="info-cart">{this.props.cartItems.length}</div>
+            ) : (
+              ''
+            )}
           </section>
         </section>
       </nav>
