@@ -441,6 +441,10 @@ table {
 }
 .cart-page > div > .cart-product-card > .left-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
 }
 .cart-page .attributes-buttons > div > button {
   width: 65px;
