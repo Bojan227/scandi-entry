@@ -55,6 +55,7 @@ export class CartOverlay extends React.Component {
             onClick={() => {
               this.props.openCartPage();
               this.props.closeMiniCart();
+              this.props.closeProductPage();
             }}
           >
             VIEW BAG

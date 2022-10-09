@@ -46,6 +46,7 @@ export class Nav extends React.Component {
                 onClick={() => {
                   this.props.changeCategory(i);
                   this.props.closeCartPage();
+                  this.props.closeProductPage();
                 }}
               >
                 {category}
@@ -53,7 +54,12 @@ export class Nav extends React.Component {
             );
           })}
         </ul>
-        <section onClick={() => this.props.closeCartPage()}>
+        <section
+          onClick={() => {
+            this.props.closeCartPage();
+            this.props.closeProductPage();
+          }}
+        >
           <img src={logo} alt="" />
         </section>
         <section className="cart-currency">
@@ -118,6 +124,7 @@ export class Nav extends React.Component {
                         addAttribute={this.props.addAttribute}
                         openCartPage={this.props.openCartPage}
                         closeMiniCart={this.closeMiniCart}
+                        closeProductPage={this.props.closeProductPage}
                       />
                     </div>
                   </div>

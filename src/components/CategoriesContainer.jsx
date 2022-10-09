@@ -57,7 +57,8 @@ export class CategoriesContainer extends React.Component {
                         key={i}
                         currentCurrency={this.props.currentCurrency}
                         {...product}
-                        onClick={() => this.props.addCartItems(product)}
+                        addItem={() => this.props.addCartItems(product)}
+                        openProductPage={this.props.openProductPage}
                       />
                     );
                   })}
