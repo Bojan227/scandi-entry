@@ -161,7 +161,13 @@ class App extends React.Component {
           />
         )}
         {this.state.productPageIsOpen && (
-          <ProductContainer {...this.state.product} />
+          <ProductContainer
+            {...this.state.product}
+            addAttribute={this.addAttribute}
+            selectedAttributes={this.state.selectedAttributes}
+            currentCurrency={this.state.currentCurrency}
+
+          />
         )}
       </div>
     );
