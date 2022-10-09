@@ -18,7 +18,10 @@ export class ProductCard extends React.Component {
         onMouseEnter={this.toggleBuyIcon}
         onMouseLeave={this.toggleBuyIcon}
         className="product-card"
-        onClick={() => this.props.openProductPage()}
+        onClick={() => {
+          this.props.addProduct();
+          this.props.openProductPage();
+        }}
       >
         <div className="main-img" style={{ position: 'relative' }}>
           <img src={this.props.gallery[0]} alt="img" />

@@ -9,7 +9,7 @@ export class ProductContainer extends React.Component {
         <div className="product-info">
           <section>
             <h1>Brand</h1>
-            <h3>Name</h3>
+            <h3>{this.props.name}</h3>
           </section>
           <section className="attributes-container"></section>
           <section className="price-container">

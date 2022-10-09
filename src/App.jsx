@@ -15,7 +15,7 @@ class App extends React.Component {
     selectedAttributes: [],
     cartIsOpen: false,
     productPageIsOpen: false,
-    product: [],
+    product: undefined,
   };
 
   changeCategory = index => {
@@ -116,6 +116,13 @@ class App extends React.Component {
     }));
   };
 
+  addProduct = product => {
+    this.setState(state => ({
+      ...state,
+      product: product,
+    }));
+  };
+
   render() {
     return (
       <div className="App">
@@ -133,15 +140,16 @@ class App extends React.Component {
           closeCartPage={this.closeCartPage}
           closeProductPage={this.closeProductPage}
         />
-        {!this.state.cartIsOpen && (
+        {!this.state.cartIsOpen && !this.state.productPageIsOpen && (
           <CategoriesContainer
             currentCategory={this.state.currentCategory}
             currentCurrency={this.state.currentCurrency}
             addCartItems={this.addCartItems}
             openProductPage={this.openProductPage}
+            addProduct={this.addProduct}
           />
         )}
-        {this.state.cartIsOpen && (
+        {this.state.cartIsOpen && !this.state.productPageIsOpen && (
           <CartContainer
             cartItems={this.state.cartItems}
             currentCurrency={this.state.currentCurrency}
@@ -152,7 +160,9 @@ class App extends React.Component {
             cartIsOpen={this.state.cartIsOpen}
           />
         )}
-        {this.state.productPageIsOpen && <ProductContainer />}
+        {this.state.productPageIsOpen && (
+          <ProductContainer {...this.state.product} />
+        )}
       </div>
     );
   }

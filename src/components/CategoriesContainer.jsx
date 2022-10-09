@@ -59,6 +59,7 @@ export class CategoriesContainer extends React.Component {
                         {...product}
                         addItem={() => this.props.addCartItems(product)}
                         openProductPage={this.props.openProductPage}
+                        addProduct={() => this.props.addProduct(product)}
                       />
                     );
                   })}
