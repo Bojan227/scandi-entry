@@ -48,7 +48,7 @@ export class CategoriesContainer extends React.Component {
               data.categories[this.props.currentCategory + 1];
 
             return (
-              <div className="category-container">
+              <div className={`category-container `}>
                 <h1>{name.charAt(0).toUpperCase() + name.slice(1)}</h1>
                 <div className="products">
                   {products.map((product, i) => {
