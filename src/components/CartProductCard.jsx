@@ -58,8 +58,7 @@ export class CartProductCard extends React.Component {
                   key={i}
                   {...item}
                   type={item.type}
-                  selectedAttributes={this.props.selectedAttributes}
-                  addAttribute={this.props.addAttribute}
+                  selectAttribute={this.props.selectAttribute}
                 />
               );
             })}

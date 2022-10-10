@@ -20,8 +20,7 @@ export class CartOverlay extends React.Component {
                 currentCurrency={this.props.currentCurrency}
                 incrementQuantity={() => this.props.incrementQuantity(item.id)}
                 decrementQuantity={() => this.props.decrementQuantity(item.id)}
-                selectedAttributes={this.props.selectedAttributes}
-                addAttribute={this.props.addAttribute}
+                selectAttribute={this.props.selectAttribute}
               />
             ))
           )}

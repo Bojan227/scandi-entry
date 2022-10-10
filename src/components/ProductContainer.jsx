@@ -11,7 +11,7 @@ export class ProductContainer extends React.Component {
     return (
       <div className="product-container">
         <div className="images-container">
-          {this.props.gallery.map((url, i) => {
+          {this.props.product.gallery.map((url, i) => {
             return (
               <div
                 key={i}
@@ -34,25 +34,24 @@ export class ProductContainer extends React.Component {
         </div>
         <div className="main-img-container">
           <img
-            src={this.props.gallery[this.state.currentImage]}
+            src={this.props.product.gallery[this.state.currentImage]}
             alt="img"
             style={{ width: '600px', height: '600px' }}
           />
         </div>
         <div className="product-info">
           <section>
-            <h1>{this.props.brand}</h1>
-            <h3>{this.props.name}</h3>
+            <h1>{this.props.product.brand}</h1>
+            <h3>{this.props.product.name}</h3>
           </section>
           <section className="attributes-container">
-            {this.props.attributes.map((item, i) => {
+            {this.props.product.attributes.map((item, i) => {
               return (
                 <AttributeCard
                   key={i}
                   {...item}
                   type={item.type}
-                  selectedAttributes={this.props.selectedAttributes}
-                  addAttribute={this.props.addAttribute}
+                  selectAttribute={this.props.selectAttribute}
                 />
               );
             })}
@@ -60,15 +59,18 @@ export class ProductContainer extends React.Component {
           <section className="price-container">
             <h2>PRICE:</h2>
             <h3>
-              {this.props.prices[this.props.currentCurrency].currency.symbol}
+              {
+                this.props.product.prices[this.props.currentCurrency].currency
+                  .symbol
+              }
               <span>
-                {this.props.prices[this.props.currentCurrency].amount}
+                {this.props.product.prices[this.props.currentCurrency].amount}
               </span>
             </h3>
           </section>
-          <button>ADD TO CART</button>
+          <button onClick={this.props.addCartItems}>ADD TO CART</button>
           <section className="description">
-            {parse(this.props.description)}
+            {parse(this.props.product.description)}
           </section>
         </div>
       </div>

@@ -266,6 +266,13 @@ table {
 
 /* cart-overlay */
 .cart-overlay-container {
+  position: absolute;
+  top: 200%;
+  left: -300px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #ffffff;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -293,14 +300,7 @@ table {
   list-style: 25px;
 }
 .cart-overlay-dropdown {
-  position: absolute;
-  top: 200%;
-  left: -300px;
-  cursor: pointer;
-  text-align: center;
   display: none;
-  background-color: #ffffff;
-  z-index: 1000;
 }
 
 .cart-overlay-container .left-container {

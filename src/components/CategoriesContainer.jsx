@@ -46,9 +46,18 @@ export class CategoriesContainer extends React.Component {
             if (loading) return 'Loading....';
             const { name, products } =
               data.categories[this.props.currentCategory + 1];
-
             return (
-              <div className={`category-container `}>
+              <div
+                className="category-container"
+                style={{
+                  background: `${
+                    this.props.toggleMiniCart ? 'rgba(57, 55, 72, 0.22)' : ''
+                  }`,
+                  position: `${this.props.toggleMiniCart ? 'fixed' : ''}`,
+                  zIndex: '500',
+                  width: '100%',
+                }}
+              >
                 <h1>{name.charAt(0).toUpperCase() + name.slice(1)}</h1>
                 <div className="products">
                   {products.map((product, i) => {

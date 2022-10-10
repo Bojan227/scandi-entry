@@ -22,8 +22,7 @@ export class CartContainer extends React.Component {
                   decrementQuantity={() =>
                     this.props.decrementQuantity(item.id)
                   }
-                  selectedAttributes={this.props.selectedAttributes}
-                  addAttribute={this.props.addAttribute}
+                  selectAttribute={this.props.selectAttribute}
                   cartIsOpen={this.props.cartIsOpen}
                 />
               ))}

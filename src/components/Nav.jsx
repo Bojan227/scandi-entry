@@ -20,14 +20,6 @@ const categoriesData = ['CLOTHES', 'TECH'];
 export class Nav extends React.Component {
   state = {
     toggleCurrency: false,
-    toggleCart: false,
-  };
-
-  closeMiniCart = () => {
-    this.setState(state => ({
-      ...state,
-      toggleCart: false,
-    }));
   };
 
   render() {
@@ -65,7 +57,7 @@ export class Nav extends React.Component {
         <section className="cart-currency">
           <div className="currencies">
             <Query query={CURRENCIES_QUERY}>
-              {({ loading, error, data }) => {
+              {({ loading, data }) => {
                 if (loading) return 'Loading....';
                 const { currencies } = data;
 
@@ -73,13 +65,13 @@ export class Nav extends React.Component {
                   <div style={{ position: 'relative' }}>
                     <div
                       className="current-currency"
-                      onClick={() =>
+                      onClick={() => {
+                        this.props.closeMiniCart();
                         this.setState(state => ({
                           ...state,
                           toggleCurrency: !state.toggleCurrency,
-                          toggleCart: false,
-                        }))
-                      }
+                        }));
+                      }}
                     >
                       <h1>{currencies[this.props.currentCurrency].symbol}</h1>
                       <img src={caret} alt="caret" />
@@ -112,7 +104,9 @@ export class Nav extends React.Component {
                     <div
                       className="cart-overlay-dropdown"
                       style={{
-                        display: `${this.state.toggleCart ? 'block' : 'none'}`,
+                        display: `${
+                          this.props.toggleMiniCart ? 'block' : 'none'
+                        }`,
                       }}
                     >
                       <CartOverlay
@@ -120,10 +114,9 @@ export class Nav extends React.Component {
                         currentCurrency={this.props.currentCurrency}
                         incrementQuantity={this.props.incrementQuantity}
                         decrementQuantity={this.props.decrementQuantity}
-                        selectedAttributes={this.props.selectedAttributes}
-                        addAttribute={this.props.addAttribute}
+                        selectAttribute={this.props.selectAttribute}
                         openCartPage={this.props.openCartPage}
-                        closeMiniCart={this.closeMiniCart}
+                        closeMiniCart={this.props.closeMiniCart}
                         closeProductPage={this.props.closeProductPage}
                       />
                     </div>
@@ -133,13 +126,16 @@ export class Nav extends React.Component {
             </Query>
           </div>
           <section
-            onClick={() =>
+            onClick={() => {
               this.setState(state => ({
                 ...state,
-                toggleCart: !state.toggleCart,
+
                 toggleCurrency: false,
-              }))
-            }
+              }));
+              this.props.toggleMiniCart
+                ? this.props.closeMiniCart()
+                : this.props.openMiniCart();
+            }}
             className="empty_cart"
           >
             <img src={cart} alt="empty_cart" />

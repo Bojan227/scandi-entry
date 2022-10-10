@@ -3,19 +3,18 @@ import { Nav } from './components/Nav';
 import { CategoriesContainer } from './components/CategoriesContainer';
 import { CartContainer } from './components/CartContainer';
 import { ProductContainer } from './components/ProductContainer';
+import { v4 as uuid } from 'uuid';
 import React from 'react';
-
-import { useQuery, gql } from '@apollo/client';
 
 class App extends React.Component {
   state = {
     currentCategory: 0,
     currentCurrency: 0,
     cartItems: [],
-    selectedAttributes: [],
     cartIsOpen: false,
     productPageIsOpen: false,
-    product: undefined,
+    product: [],
+    toggleMiniCart: false,
   };
 
   changeCategory = index => {
@@ -33,7 +32,6 @@ class App extends React.Component {
   };
 
   addCartItems = product => {
-    console.log(product);
     this.setState(state => ({
       ...state,
       cartItems: state.cartItems.find(item => item.id === product.id)
@@ -76,16 +74,54 @@ class App extends React.Component {
     }));
   };
 
-  addAttribute = value => {
-    console.log(value);
-    this.setState(state => ({
-      ...state,
-      selectedAttributes: state.selectedAttributes.find(
-        attribute => attribute === value
-      )
-        ? state.selectedAttributes.filter(att => att !== value)
-        : [...state.selectedAttributes, value],
-    }));
+  selectAttribute = id => {
+    if (this.state.productPageIsOpen && !this.state.toggleMiniCart) {
+      this.setState(state => ({
+        ...state,
+        product: {
+          ...state.product,
+          attributes: state.product.attributes.map(attribute => {
+            return {
+              ...attribute,
+              items: attribute.items.map(item => {
+                if (item.id === id) {
+                  return {
+                    ...item,
+                    isSelected: !item.isSelected,
+                  };
+                } else {
+                  return item;
+                }
+              }),
+            };
+          }),
+        },
+      }));
+    } else if (this.state.toggleMiniCart || this.state.cartIsOpen) {
+      this.setState(state => ({
+        ...state,
+        cartItems: state.cartItems.map(product => {
+          return {
+            ...product,
+            attributes: product.attributes.map(attribute => {
+              return {
+                ...attribute,
+                items: attribute.items.map(item => {
+                  if (item.id === id) {
+                    return {
+                      ...item,
+                      isSelected: !item.isSelected,
+                    };
+                  } else {
+                    return item;
+                  }
+                }),
+              };
+            }),
+          };
+        }),
+      }));
+    }
   };
 
   openCartPage = () => {
@@ -117,9 +153,39 @@ class App extends React.Component {
   };
 
   addProduct = product => {
+    const newProduct = {
+      ...product,
+      attributes: product.attributes.map(attribute => {
+        return {
+          ...attribute,
+          items: attribute.items.map(item => {
+            return {
+              ...item,
+              isSelected: false,
+              id: uuid(),
+            };
+          }),
+        };
+      }),
+    };
+
     this.setState(state => ({
       ...state,
-      product: product,
+      product: { ...newProduct, quantity: 1 },
+    }));
+  };
+
+  openMiniCart = () => {
+    this.setState(state => ({
+      ...state,
+      toggleMiniCart: true,
+    }));
+  };
+
+  closeMiniCart = () => {
+    this.setState(state => ({
+      ...state,
+      toggleMiniCart: false,
     }));
   };
 
@@ -127,23 +193,21 @@ class App extends React.Component {
     return (
       <div className="App">
         <Nav
-          currentCategory={this.state.currentCategory}
-          currentCurrency={this.state.currentCurrency}
-          selectedAttributes={this.state.selectedAttributes}
+          {...this.state}
           changeCategory={this.changeCategory}
           changeCurrency={this.changeCurrency}
-          cartItems={this.state.cartItems}
           incrementQuantity={this.incrementQuantity}
           decrementQuantity={this.decrementQuantity}
-          addAttribute={this.addAttribute}
+          selectAttribute={this.selectAttribute}
           openCartPage={this.openCartPage}
           closeCartPage={this.closeCartPage}
           closeProductPage={this.closeProductPage}
+          openMiniCart={this.openMiniCart}
+          closeMiniCart={this.closeMiniCart}
         />
         {!this.state.cartIsOpen && !this.state.productPageIsOpen && (
           <CategoriesContainer
-            currentCategory={this.state.currentCategory}
-            currentCurrency={this.state.currentCurrency}
+            {...this.state}
             addCartItems={this.addCartItems}
             openProductPage={this.openProductPage}
             addProduct={this.addProduct}
@@ -151,22 +215,17 @@ class App extends React.Component {
         )}
         {this.state.cartIsOpen && !this.state.productPageIsOpen && (
           <CartContainer
-            cartItems={this.state.cartItems}
-            currentCurrency={this.state.currentCurrency}
+            {...this.state}
             incrementQuantity={this.incrementQuantity}
             decrementQuantity={this.decrementQuantity}
-            selectedAttributes={this.state.selectedAttributes}
-            addAttribute={this.addAttribute}
-            cartIsOpen={this.state.cartIsOpen}
+            selectAttribute={this.selectAttribute}
           />
         )}
         {this.state.productPageIsOpen && (
           <ProductContainer
-            {...this.state.product}
-            addAttribute={this.addAttribute}
-            selectedAttributes={this.state.selectedAttributes}
-            currentCurrency={this.state.currentCurrency}
-
+            {...this.state}
+            selectAttribute={this.selectAttribute}
+            addCartItems={() => this.addCartItems(this.state.product)}
           />
         )}
       </div>
